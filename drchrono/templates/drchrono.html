@@ -1,0 +1,31 @@
+<!DOCTYPE HTML5>
+
+<html>
+    <head>
+    </head>
+
+    <body>
+        {{ today }} 
+        <h3>All Patients</h3>
+        <p>
+            {% for ele in patients %}
+                {{ ele.first_name }} {{ ele.last_name }} {{ ele.date_of_birth }} <br>
+            {% endfor %}
+        </p>
+
+        <h3>Patients with Birthday</h3>
+        <p>
+            {% for ele in birthday_patients %}
+                {{ ele.first_name }} {{ ele.last_name }} {{ ele.date_of_birth }} <br>
+            {% endfor %}
+        </p>
+
+        <h3>Patients with No Date of Birth</h3>
+        <p>
+            {% for ele in nodateofbirth %}
+                {{ ele.first_name }} {{ ele.last_name }} {{ ele.date_of_birth }} <br>
+            {% endfor %}
+        </p>
+    </body>
+
+</html>
