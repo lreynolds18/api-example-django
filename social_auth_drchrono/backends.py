@@ -10,9 +10,11 @@ class drchronoOAuth2(BaseOAuth2):
     name = 'drchrono'
     AUTHORIZATION_URL = 'https://drchrono.com/o/authorize/'
     ACCESS_TOKEN_URL = 'https://drchrono.com/o/token/'
+    REDIRECT_URI = 'http://localhost:8000/complete/drchrono/'
     ACCESS_TOKEN_METHOD = 'POST'
     REDIRECT_STATE = False
     USER_DATA_URL = 'https://drchrono.com/api/users/current'
+    
     EXTRA_DATA = [
         ('refresh_token', 'refresh_token'),
         ('expires_in', 'expires_in')
@@ -36,3 +38,5 @@ class drchronoOAuth2(BaseOAuth2):
 
     def get_auth_header(self, access_token):
         return {'Authorization': 'Bearer {0}'.format(access_token)}
+
+
