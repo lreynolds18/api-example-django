@@ -11,20 +11,24 @@ def send_email(usersEmail, usersName, doctorsName):
     # usersName - User's first and last name concatenated
     # doctorsName - Doctor's last name
     # message - message to send to usersEmail from doctor
-    #    to = "to@email.com"
+
+    # send from this gmail email
     gmail_user = os.environ["GMAIL_EMAIL"] 
     gmail_password = os.environ["GMAIL_PASSWORD"] 
+    # open smtp server
     smtpserver = smtplib.SMTP('smtp.gmail.com', 587)
     smtpserver.ehlo()
     smtpserver.starttls()
     smtpserver.ehlo
     smtpserver.login(gmail_user, gmail_password)
-    today = datetime.date.today()
 
+    # compose email message
     msg = MIMEText("Happy birthday {} from Dr. {}!".format(usersName, doctorsName))
     msg['Subject'] = "Happy birthday!"
     msg['From'] = gmail_user 
     msg['To'] = usersEmail 
+
+    # send email and stop server
     smtpserver.sendmail(gmail_user, [usersEmail], msg.as_string())
     smtpserver.quit()
 
@@ -41,6 +45,7 @@ def send_text(usersNumber, usersName, doctorsName):
     
     client = Client(account_sid, auth_token)
     
+    # send message with twilio
     client.messages.create(
         to= usersNumber,
         from_=os.environ["TWILIO_PHONE_NUMBER"],

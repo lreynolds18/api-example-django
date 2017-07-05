@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="alert alert-success" id="success-alert">
-        <button type="button" class="close" data-dismiss="alert" style="display: none;">x</button>
+    <div class="alert alert-success" id="success-alert" style="display: none;">
+        <button type="button" class="close" data-dismiss="alert">x</button>
         <strong>Success!</strong> Successfully sent happy birthday message to patients with a birthday!
     </div>
     
-    <div class="alert alert-warning" id="warning-nobirthday-alert" style="opacity: 500; display: none;">
-        <button type="button" class="close" data-dismiss="alert">x</button>
+    <div class="alert alert-warning" id="warning-nobirthday-alert" style="display: none;">
+       <button type="button" class="close" data-dismiss="alert">x</button>
         <strong>Warning!</strong> No patients with a birthday!
     </div>
 
-    <div class="alert alert-warning" id="warning-nocontact-alert" style="opacity: 500; display: none;">
+    <div class="alert alert-warning" id="warning-nocontact-alert" style="display: none;">
         <button type="button" class="close" data-dismiss="alert">x</button>
         <strong>Warning</strong> Can't send happy birthday message.  The patient did not provide phone number or email
     </div>
