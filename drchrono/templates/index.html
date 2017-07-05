@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html>
-  <body>
+{% extends 'base.html' %}
+
+{% block content %}
     <a href="{% url 'social:begin' 'drchrono' %}">
       drchrono OAuth
     </a>
-
-  </body>
-</html>
+{% endblock %}
