@@ -47,22 +47,9 @@ def drchrono(request):
     response.raise_for_status()
     data = response.json()
 
-    print("Happy birthday from Dr. {}!".format(data['results'][0]['last_name']))
-    send = """
-    import os
-    from twilio.rest import Client
+    doctorId = data['results'][0]['id']
+    doctorLastName = data['results'][0]['last_name']
     
-    account_sid = os.environ["TWILIO_ACCOUNT_SID"]
-    auth_token = os.environ["TWILIO_AUTH_TOKEN"]
-    
-    client = Client(account_sid, auth_token)
-    
-    client.messages.create(
-        to="+18109080956",
-        from_="+19478885316",
-        body="This is the ship that made the body run"
-    )
-    """
 
     # get all patients
     patients = []
