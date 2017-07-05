@@ -1,12 +1,6 @@
-<!DOCTYPE HTML5>
+{% extends 'base.html' %}
 
-<html>
-    <head>
-    </head>
-
-    <body>
-        <p>Success!</p>
-        <p>{{ request }}</p>
-    </body>
-
-</html>
+{% block content %}
+    <p>Success!</p>
+    <p>{{ request }}</p>
+{% endblock %}

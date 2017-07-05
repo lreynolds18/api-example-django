@@ -32,11 +32,37 @@ def drchrono(request):
         provider='drchrono',
     ).first()
 
-    access_token = social_user.extra_data['access_token']
     headers = {
-        'Authorization': 'Bearer %s' % access_token,
+        'Authorization': 'Bearer %s' % social_user.extra_data['access_token'],
     }
+
+    # get current user (doctor) 
+    response = requests.get('https://drchrono.com/api/users/current', headers=headers)
+    response.raise_for_status()
+    data = response.json()
+
+    # get the current user's last name
+    response = requests.get('https://drchrono.com/api/doctors?username=%s' % data['username'], headers=headers)
+    response.raise_for_status()
+    data = response.json()
+
+    print("Happy birthday from Dr. {}!".format(data['results'][0]['last_name']))
+    send = """
+    import os
+    from twilio.rest import Client
     
+    account_sid = "AC165334c81f96cc1a53eec28e8878f141"
+    auth_token = "7c1d92a950c5fe836d7152472bf3e8a8"
+    
+    client = Client(account_sid, auth_token)
+    
+    client.messages.create(
+        to="+18109080956",
+        from_="+19478885316",
+        body="This is the ship that made the body run"
+    )
+    """
+    # get all patients
     patients = []
     patients_url = 'https://drchrono.com/api/patients'
     while patients_url:
@@ -49,9 +75,12 @@ def drchrono(request):
     birthday_patients = []
     nodateofbirth = []
 
+    # sort patients by birthday and no date of birth
     for patient in patients:
         if patient[u'date_of_birth'] == None:
             nodateofbirth.append(patient)
+            if patient[u'last_name'] == "Reynolds":
+                print("happy birthday") 
         elif patient[u'date_of_birth'][:5] == today:
             birthday_patients.append(patient)
 
