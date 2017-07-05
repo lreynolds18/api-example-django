@@ -1,10 +1,11 @@
 # Create your views here.
 import logging, logging.config
 import sys
-import datetime, pytz, requests, time
+import datetime, pytz, requests, time, threading
 from django.views.generic import TemplateView
 from django.http import HttpResponse
 from django.template import loader
+from utils import send_email, send_text
 
 def index(request):
     template = loader.get_template('index.html')
@@ -41,6 +42,7 @@ def drchrono(request):
     response = requests.get('https://drchrono.com/api/users/current', headers=headers)
     response.raise_for_status()
     data = response.json()
+    link = "https://" + data['username'] + ".drchrono.com/patients/"
 
     # get the current user's last name
     response = requests.get('https://drchrono.com/api/doctors?username=%s' % data['username'], headers=headers)
@@ -49,7 +51,6 @@ def drchrono(request):
 
     doctorId = data['results'][0]['id']
     doctorLastName = data['results'][0]['last_name']
-    
 
     # get all patients
     patients = []
@@ -68,15 +69,58 @@ def drchrono(request):
     for patient in patients:
         if patient[u'date_of_birth'] == None:
             nodateofbirth.append(patient)
-            if patient[u'last_name'] == "Reynolds":
-                print("happy birthday") 
-        elif patient[u'date_of_birth'][:5] == today:
+        elif patient[u'date_of_birth'][5:] == today:
             birthday_patients.append(patient)
 
+    success = False 
+    nobirthday = False 
+    nocontact = False 
+
+    if request.GET.get("hapbir"):
+        if len(birthday_patients) > 0:
+            for p in birthday_patients:
+                if p[u'email'] != None or p[u'cell_phone'] != None:
+                    # TODO: how to handle message where some patients have contact info and others don't
+                    # prehaps it doesn't matter
+
+                    # def send_email(usersEmail, usersName, doctorsName)
+                    # def send_text(usersNumber, usersName, doctorsName)
+                    success = True
+                    if p[u'email']:
+                        # try sending email first, then send text
+                        # TODO: see if users have preference?
+                        args = (p[u'email'], p[u'first_name'] + " " + p[u'last_name'], doctorLastName)
+                        t = threading.Thread(target=send_email, args=args)
+                        t.setDaemon(True)
+                        t.start()
+                    elif p[u'cell_phone']:
+                        # making naive assumtions here with number formatting
+                        # looks like default format is '(***) ***-****'
+                        number = "+1"
+                        for ch in p[u"cell_phone"]:
+                            if ch.isdigit():
+                                number += ch
+            
+                        if len(number) == 12:
+                            args = (number, p[u'first_name'] + " " + p[u'last_name'], doctorLastName)
+                            t = threading.Thread(target=send_text, args=args)
+                            t.setDaemon(True)
+                            t.start()
+                else:
+                    nocontact = True
+        else:
+            # no patients with birthday
+            nobirthday = True 
+        
+        
     context = {
-        'patients' : patients,
         'birthday_patients' : birthday_patients,
+        'link' : link,
+        'nobirthday' : nobirthday,
+        'nocontact' : nocontact,
         'nodateofbirth' : nodateofbirth,
+        'patients' : patients,
+        'success' : success,
     }
     return HttpResponse(template.render(context, request))
 

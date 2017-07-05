@@ -10,6 +10,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
+bin/
 build/
 include/
 develop-eggs/
@@ -93,3 +94,4 @@ ENV/
 
 db.sqlite3
 env.sh
+pip-selfcheck.json

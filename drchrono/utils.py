@@ -21,7 +21,7 @@ def send_email(usersEmail, usersName, doctorsName):
     smtpserver.login(gmail_user, gmail_password)
     today = datetime.date.today()
 
-    msg = MIMEText("Happy birthday {}, from Dr. {}!".format(usersName, doctorsName))
+    msg = MIMEText("Happy birthday {} from Dr. {}!".format(usersName, doctorsName))
     msg['Subject'] = "Happy birthday!"
     msg['From'] = gmail_user 
     msg['To'] = usersEmail 
@@ -42,9 +42,9 @@ def send_text(usersNumber, usersName, doctorsName):
     client = Client(account_sid, auth_token)
     
     client.messages.create(
-        to="+1" + usersNumber,
+        to= usersNumber,
         from_=os.environ["TWILIO_PHONE_NUMBER"],
-        body="Happy birthday {}, from Dr. {}!".format(usersName, doctorsName)
+        body="Happy birthday {} from Dr. {}!".format(usersName, doctorsName)
     )
 
 
