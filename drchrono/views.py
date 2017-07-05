@@ -28,6 +28,7 @@ def success(request):
 def drchrono(request):
     template = loader.get_template('drchrono.html')
 
+    # TODO: fix this - doesn't actually pull current user's access token
     social_user = request.user.social_auth.filter(
         provider='drchrono',
     ).first()
@@ -51,8 +52,8 @@ def drchrono(request):
     import os
     from twilio.rest import Client
     
-    account_sid = "AC165334c81f96cc1a53eec28e8878f141"
-    auth_token = "7c1d92a950c5fe836d7152472bf3e8a8"
+    account_sid = os.environ["TWILIO_ACCOUNT_SID"]
+    auth_token = os.environ["TWILIO_AUTH_TOKEN"]
     
     client = Client(account_sid, auth_token)
     
@@ -62,6 +63,7 @@ def drchrono(request):
         body="This is the ship that made the body run"
     )
     """
+
     # get all patients
     patients = []
     patients_url = 'https://drchrono.com/api/patients'

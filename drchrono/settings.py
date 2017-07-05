@@ -110,19 +110,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
-# consider https://simpleisbetterthancomplex.com/2015/11/26/package-of-the-week-python-decouple.html
-
-SOCIAL_AUTH_DRCHRONO_KEY = 'g01QAJ1sXhS94hbBNGHAAYNVEgmygl4jlPNNmfpL'
-
-SOCIAL_AUTH_DRCHRONO_SECRET = 'HPEh78vwYfgMsHK5e4ejUtczqO6mCMjqdizMwTzFLczCrCvYgpGx00Vpc03urSERE6c3VfuEn8PcsOFhDxHPD6p6a7P2jol13UPxp35BpyI3mEqEpla9VcbF0wu5u8QL'
-
+# python social auth data
+SOCIAL_AUTH_DRCHRONO_KEY = os.environ["DRCHRONO_CLIENT_ID"]
+SOCIAL_AUTH_DRCHRONO_SECRET = os.environ["DRCHRONO_SECRET"] 
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'http://test1.com:8000/success/'
 SOCIAL_AUTH_LOGIN_URL = '/'
 
-# SOCIAL_AUTH_LOGIN_ERROR_URL = '/'
-# SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'http://localhost:8000/success'
-# SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'http://localhost:8000/complete/drchrono/'
-# SOCIAL_AUTH_REDIRECT_URI = 'http://localhost:8000/success'
-# SOCIAL_AUTH_REDIRECT_URI = 'http://localhost:8000/complete/drchrono/'
-# SOCIAL_AUTH_RAISE_EXCEPTIONS = False

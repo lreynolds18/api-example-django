@@ -92,3 +92,4 @@ ENV/
 .ropeproject
 
 db.sqlite3
+env.sh
