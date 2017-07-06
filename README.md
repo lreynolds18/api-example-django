@@ -21,4 +21,7 @@ LOGIN_REDIRECT_URL
 
 
 Changes made:
-
+- Added python social auth to connect to drchrono api, changes can be found in settings.py.
+- Added functionality views.py to pull current user and all the user's patients from drchrono api.
+- Added functions send_email and send_text in utils.py to send an email using gmail and send a text using twilio respectively.
+- Added twitter bootstrap alerts to show success/error messages from sending messages.

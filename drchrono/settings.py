@@ -113,6 +113,6 @@ STATIC_URL = '/static/'
 # python social auth data
 SOCIAL_AUTH_DRCHRONO_KEY = os.environ["DRCHRONO_CLIENT_ID"]
 SOCIAL_AUTH_DRCHRONO_SECRET = os.environ["DRCHRONO_SECRET"] 
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'http://test1.com:8000/success/'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'http://test1.com:8000/drchrono/'
 SOCIAL_AUTH_LOGIN_URL = '/'
 

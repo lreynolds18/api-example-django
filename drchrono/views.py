@@ -6,30 +6,20 @@ from django.views.generic import TemplateView
 from django.http import HttpResponse
 from django.template import loader
 from utils import send_email, send_text
+from django.contrib.auth.decorators import login_required
 
-def index(request):
-    template = loader.get_template('index.html')
+def login(request):
+    template = loader.get_template('login.html')
 
     context = {
     }
     return HttpResponse(template.render(context, request))
 
-def login(request):
-    # requests.get('{}?response_type=code&client_id={}&redirect_uri={}'.format(AUTHORIZE_URL, CLIENT_ID, REDIRECT_URI)) 
-    pass
 
-def success(request):
-    template = loader.get_template('home.html')
-
-    print(request)
-    context = {'request' : request}
-
-    return HttpResponse(template.render(context, request))
-
+@login_required
 def drchrono(request):
     template = loader.get_template('drchrono.html')
 
-    # TODO: fix this - doesn't actually pull current user's access token
     social_user = request.user.social_auth.filter(
         provider='drchrono',
     ).first()
@@ -88,12 +78,13 @@ def drchrono(request):
                     success = True
                     if p[u'email']:
                         # try sending email first, then send text
-                        # TODO: see if users have preference?
+                        # start thread that sends one email
                         args = (p[u'email'], p[u'first_name'] + " " + p[u'last_name'], doctorLastName)
                         t = threading.Thread(target=send_email, args=args)
                         t.setDaemon(True)
                         t.start()
                     elif p[u'cell_phone']:
+                        # start thread that sends one text
                         # making naive assumtions here with number formatting
                         # looks like default format is '(***) ***-****'
                         number = "+1"
